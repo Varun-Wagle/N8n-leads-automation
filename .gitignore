@@ -1,0 +1,12 @@
+# Ignore n8n runtime and container data
+n8n_data/
+
+# Ignore Docker environment settings
+docker-compose.yaml
+
+# Ignore system files
+*.log
+.env
+__pycache__/
+.DS_Store
+Thumbs.db

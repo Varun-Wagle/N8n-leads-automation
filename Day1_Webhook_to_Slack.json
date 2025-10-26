@@ -1,0 +1,131 @@
+{
+  "name": "Day1_Webhook_to_Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "slack-test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        -64
+      ],
+      "id": "fb7f9fe2-fdeb-44ca-9807-e7d92a1730aa",
+      "name": "Webhook",
+      "webhookId": "054075fc-3926-4b94-9b96-8d842b05fadb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0082878f-a1d9-4951-8790-aaaacda0d40b",
+              "name": "name",
+              "value": "={{$json[\"body\"][\"name\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "c27be78d-2742-4213-8d4c-b93f196beff6",
+              "name": "email",
+              "value": "={{$json[\"body\"][\"email\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "4db67e4a-c43e-46ce-bb8c-fa2865fb5898",
+              "name": "message",
+              "value": "={{$json[\"body\"][\"message\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "0dee87f1-8e83-49fc-99e1-37278dac3978",
+              "name": "formattedText",
+              "value": "=New Lead Received:\nName: {{$json[\"body\"][\"name\"]}}\nEmail: {{$json[\"body\"][\"email\"]}}\nMessage: {{$json[\"body\"][\"message\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -512,
+        -16
+      ],
+      "id": "73f76586-c795-43ba-a637-8c359c66339c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/REDACTED_FOR_SECURITY",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{$json[\"formattedText\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        -16
+      ],
+      "id": "252b27ff-38da-442a-acc5-2679a4ed2266",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f47e69f0-6a90-42d3-961a-4bf1d5a1d451",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01748d744534e95f4d2e18d306a6567738b2b401148dbda9ae85970905caf37f"
+  },
+  "id": "GkTZoAvlRxgqwoVX",
+  "tags": []
+}
